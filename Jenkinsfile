@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools{
         maven 'maven-3.9.3'
-        jdk 'jdk-11'
     }
 
     stages {
@@ -30,9 +29,14 @@ pipeline {
         }
 
         stage("Sonar Analysis") {
+            tools{
+                jdk 'jdk-11'
+            }
             steps {
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=api'
+                scripts{
+                    withSonarQubeEnv('sonar') {
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=api'
+                    }
                 }
             }
         }
