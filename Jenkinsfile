@@ -2,11 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Git checkout') {
+        stage('Git Checkout') {
             steps {
-                script {
-                    git branch: 'main', 'github', url: 'https://github.com/chianeng-tech-org/wordsmith-api.git'
-                }
+                 git branch: 'main', changelog: false, poll: false, url: 'https://github.com/chianeng-tech-org/wordsmith-api.git'
             }
         }
     }
