@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git checkout') {
             steps {
-                sh git branch: 'main', changelog: false, poll: false, url: 'https://github.com/chianeng-tech-org/wordsmith-api.git'
+                sh git branch: 'main', 'github', url: 'https://github.com/chianeng-tech-org/wordsmith-api.git'
             }
         }
     }
