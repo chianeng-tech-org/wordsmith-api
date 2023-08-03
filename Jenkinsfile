@@ -27,9 +27,6 @@ pipeline {
         }
 
         stage("Sonar Analysis") {
-            tools{
-                jdk 'jdk-11'
-            }
             steps {
                 scripts{
                     withSonarQubeEnv('sonar') {
