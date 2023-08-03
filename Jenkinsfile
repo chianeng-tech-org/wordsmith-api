@@ -25,7 +25,7 @@ pipeline {
                 jdk "jdk-11" //name of jdk @tools
             }
             environment {
-                SCANNER_HOME= tool 'sonar' // name of sonar scanner @tools
+                SCANNER_HOME= tool 'sonar-scanner' // name of sonar scanner @tools
             }
             steps {
                 withSonarQubeEnv('sonar-server') {
