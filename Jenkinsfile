@@ -21,10 +21,17 @@ pipeline {
             }
         }
         stage("Sonar Analysis") {
+            tools{
+                jdk "jdk-11"
+            }
+            environment {
+                scannerHome = tool "sonar"
+            }
             steps {
                 withSonarQubeEnv('sonar') {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=api'
-                } 
+                }
+                
             }
         }
     }
