@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools{
         maven 'maven-3.9.3'
-        jdk 'jdk-17'
+        jdk 'jdk-11'
     }
 
     stages {
@@ -13,8 +13,13 @@ pipeline {
         }
 
         stage("Code compile") {
+            tools{
+                jdk 'jdk-17'
+            }
             steps {
-                sh "mvn clean compile"
+                script {
+                    sh "mvn clean compile"
+                }
             }
         }
 
