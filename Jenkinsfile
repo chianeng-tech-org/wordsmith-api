@@ -21,19 +21,10 @@ pipeline {
             }
         }
         stage("Sonar Analysis") {
-            tools{
-                jdk "jdk-11" //name of jdk @tools
-            }
-            environment {
-                SCANNER_HOME= tool 'sonar-scanner' // name of sonar scanner @tools
-            }
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=wordsmith-api \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectkey=Devops-CICD '''
-                }
-                
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=wordsmith-api'
+                } 
             }
         }
     }
