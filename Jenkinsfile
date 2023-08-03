@@ -30,10 +30,7 @@ pipeline {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectNAME=api \
                     -Dsonar.java.binaries=. \
                     -Dsonar.projectkey=api '''
-
-
-                    
-                    
+ 
                 }
             }
         }
