@@ -22,14 +22,16 @@ pipeline {
         }
         stage("Sonar Analysis") {
             tools{
-                jdk "jdk-11"
+                jdk "jdk-11" //name of jdk @tools
             }
             environment {
-                scannerHome = tool "sonar"
+                SCANNER_HOME= tool 'sonar' // name of sonar scanner @tools
             }
             steps {
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=api'
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=wordsmith-api \
+                    -Dsonar.java.binaries=. \
+                    -Dsonar.projectkey=Devops-CICD '''
                 }
                 
             }
