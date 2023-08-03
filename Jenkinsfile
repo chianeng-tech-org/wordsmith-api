@@ -27,10 +27,9 @@ pipeline {
                 } 
             }
         }
-        stage('OWASP Scanning') {
+        stage('Artifact Build') {
            steps {
-                dependencyCheck additionalArguments: '--scan ./ --format HTML ', odcInstallation: 'DP'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                sh "mvn clean install"
             } 
        }
     }
