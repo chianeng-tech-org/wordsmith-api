@@ -27,7 +27,7 @@ pipeline {
         stage("Sonar Analysis") {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.2155:sonar -Dsonar.projectKey=api'
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=api'
                 }
             }
         }
