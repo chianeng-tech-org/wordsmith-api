@@ -32,10 +32,21 @@ pipeline {
                 sh "mvn clean install"
             } 
        }
-       stage("Docker Build"){
-            steps{
-			    sh "docker build -t chianeng/wordsmith-api-img ." 
-            }  
+       
+        stage('Trivy image scan') {
+           steps {
+                sh "trivy chianeng/wordsmith-api-img:latest"
+            } 
         }
+        stage('Push to ECR') {
+           steps {
+             withEnv ({"AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"})
+                sh "docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) public.ecr.aws/v5c6t0p8"
+                sh "docker build -t chianeng/wordsmith-api-img ."
+                sh "docker tag chianeng/wordsmith-api-img:""$BUILD_ID"""
+                sh "docker push public.ecr.aws/v5c6t0p8/chianeng/wordsmith-api-img:""$BUILD_ID"""
+            } 
+        }
+
     }
 }
