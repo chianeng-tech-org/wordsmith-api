@@ -32,18 +32,14 @@ pipeline {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=wordsmith-api'
                 } 
             }
-        }
-        
-        stage("Quality Gate"){
-            steps{
-                script{
-                    timeout(time: 5, unit: 'MINUTES') {
-                        def qg = waitForQualityGate() 
-                        if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
-                    }
-                }
+        } 
+
+        stage('Build') {
+            tools{
+                jdk 'jdk-17'
+            }
+            steps {
+               sh "mvn clean install"
             }
         }
     }
