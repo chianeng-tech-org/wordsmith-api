@@ -2,7 +2,7 @@
 FROM --platform=${BUILDPLATFORM} maven:3-amazoncorretto-17 as build
 WORKDIR /home/lab
 
-COPY pom.xml .
+COPY target/words.jar .
 RUN mvn verify -DskipTests --fail-never
 
 COPY src ./src
