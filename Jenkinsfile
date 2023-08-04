@@ -46,8 +46,11 @@ pipeline {
         stage('Docker Build & Tag Image') {
            steps {
                 script{
-                    sh "DOCKER_BUILDKIT=1 docker build -t 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT ."
-                } 
+                    dir("${WORKSPACE}"){
+                        sh "ls -l"
+                        sh "docker build -t 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT ."
+                    } 
+                }
             } 
         }
 
