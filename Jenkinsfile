@@ -46,16 +46,16 @@ pipeline {
         stage('Docker Build & Tag Image') {
            steps {
                 script{
-                    sh "docker build -t words:1.0.SNAPSHOT ."
-                    sh "docker tag words:1.0.SNAPSHOT/wordsmith-api:latest"
+                    sh "docker build -t 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT ."
                 } 
             } 
         }
 
-        stage('Docker Push ECR') {
+        stage('Docker To Push ECR') {
            steps {
                 script{
-                    sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v5c6t0p8"
+                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637678941185.dkr.ecr.us-east-1.amazonaws.com"
+                    sh "docker push 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT"
                 } 
             } 
         }
