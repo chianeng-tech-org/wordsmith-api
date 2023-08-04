@@ -34,7 +34,7 @@ pipeline {
             }
         } 
 
-        stage('Build') {
+        stage('Artifact Build') {
             tools{
                 jdk 'jdk-17'
             }
@@ -42,5 +42,23 @@ pipeline {
                sh "mvn clean install"
             }
         }
+
+        stage('Docker Build & Tag Image') {
+           steps {
+                script{
+                    sh "docker build -t words:1.0.SNAPSHOT ."
+                    sh "docker tag words:1.0.SNAPSHOT/wordsmith-api:latest"
+                } 
+            } 
+        }
+
+        stage('Docker Push ECR') {
+           steps {
+                script{
+                    sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v5c6t0p8"
+                } 
+            } 
+        }
+
     }
 }
