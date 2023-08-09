@@ -66,7 +66,7 @@ pipeline {
                 script{
                     dir("${WORKSPACE}"){
                         sh "ls -l"
-                        sh "docker build -t 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT ."
+                        sh "docker build -t ${registry}/chianeng-wordsmith-api:${tag} ."
                     } 
                 }
             } 
