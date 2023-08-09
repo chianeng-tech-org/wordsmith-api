@@ -1,3 +1,6 @@
+def tag
+def name = "wordsmith-api"
+def registry = "637678941185.dkr.ecr.us-east-1.amazonaws.com"
 pipeline {
     agent any
     tools{
@@ -16,7 +19,10 @@ pipeline {
                 jdk 'jdk-17'
             }
             steps {
-               sh "mvn clean compile"
+                script{
+                    tag = getComponentTag()
+                    sh "mvn clean compile"
+                }
             }
         }
         
@@ -71,8 +77,8 @@ pipeline {
            steps{
                 script{
                     withAWS([credentials:'aws-cred',region:'us-east-1']){
-                        sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637678941185.dkr.ecr.us-east-1.amazonaws.com"
-                        sh "docker push 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT"
+                        sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${registry}"
+                        sh "docker push ${registry}/${name}:${tag}"
                     } 
                 } 
             }
@@ -82,9 +88,29 @@ pipeline {
     post{
         failure{
                 withAWS([credentials:'aws-cred',region:'us-east-1']){
-                    sh"aws sns publish --topic-arn arn:aws:sns:us-east-1:637678941185:jenkins-notification --message 'Build failed for component wordsmith-api : Build URl: ${BUILD_URL}' --subject 'Build Status'"
+                    sh"aws sns publish --topic-arn arn:aws:sns:us-east-1:637678941185:jenkins-notification --message 'Build failed for component ${name} Build URl: ${BUILD_URL}' --subject 'Build Status'"
                 }
             }
     }
 }
+void getComponentTag(){
+    def pom = readMavenPom file: 'pom.xml'
+        version = pom.version
+        println version
+    def branch = "${BRANCH_NAME}"
+        println branch
+        branch = branch.replaceAll("/","-")
+        println branch
+    def buildNumber = "${BUILD_NUMBER}"
+        println buildNumber
+    def tag
+        if(branch == "develop"){
+            tag = "${version}-rc-${buildNumber}"
+        } else if(branch == "main"){
+            tag = "${version}-${buildNumber}"
+        } else{
+            tag = "${version}-${branch}.${buildNumber}"
+        }
+        return tag
+}     
 
