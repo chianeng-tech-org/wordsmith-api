@@ -66,7 +66,7 @@ pipeline {
                 script{
                     dir("${WORKSPACE}"){
                         sh "ls -l"
-                        sh "docker build -t ${registry}/chianeng-${name}:${tag} ."
+                        sh "docker build -t ${registry}/neng-${name}:${tag} ."
                     } 
                 }
             } 
@@ -77,7 +77,7 @@ pipeline {
                 script{
                     withAWS([credentials:'aws-cred',region:'us-east-1']){
                         sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${registry}"
-                        sh "docker push ${registry}/chianeng-${name}:${tag}"
+                        sh "docker push ${registry}/neng-${name}:${tag}"
                     } 
                 } 
             }
