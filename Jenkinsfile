@@ -29,7 +29,7 @@ pipeline {
         stage("Sonar Analysis") {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=wordsmith-api'
+                    sh 'mvn org.sonarsource.sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=wordsmith-api'
                 } 
             }
         } 
@@ -70,7 +70,7 @@ pipeline {
         stage('Docker Push To ECR') {
            steps{
                 script{
-                    withAWS([credentials:'aws-cred',region:'']){
+                    withAWS([credentials:'aws-cred',region:'us-east-1']){
                         sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637678941185.dkr.ecr.us-east-1.amazonaws.com"
                         sh "docker push 637678941185.dkr.ecr.us-east-1.amazonaws.com/chianeng-wordsmith-api:1.0-SNAPSHOT"
                     } 
