@@ -19,13 +19,9 @@ pipeline {
                 jdk 'jdk-17'
             }
             steps {
-                script{
-                    tag = getComponentTag()
-                    sh "mvn clean compile"
-                }
+                sh "mvn clean compile"
             }
         }
-        
         stage("Test cases") {
             steps {
                 sh "mvn test"
@@ -58,7 +54,10 @@ pipeline {
                 jdk 'jdk-17'
             }
             steps {
-               sh "mvn clean install"
+                script{
+                    tag = getComponentTag()
+                    sh "mvn clean install"
+                }
             }
         }
 
