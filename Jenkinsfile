@@ -81,7 +81,7 @@ pipeline {
     }
     post{
         failure{
-                withAWS([credentials:'aws-creds',region:'us-east-1']){
+                withAWS([credentials:'aws-cred',region:'us-east-1']){
                     sh"aws sns publish --topic-arn arn:aws:sns:us-east-1:637678941185:jenkins-notification --message 'Build failed for component wordsmith-api : Build URl: ${BUILD_URL}' --subject 'Build Status'"
                 }
             }
