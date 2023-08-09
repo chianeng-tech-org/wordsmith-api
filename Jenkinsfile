@@ -84,7 +84,6 @@ pipeline {
                     sh"aws sns publish --topic-arn arn:aws:sns:us-east-1:637678941185:jenkins-notification --message 'Build failed for component ${name} Build URl: ${BUILD_URL}' --subject 'Build Status'"
                 }
             }
-    }
-}
+        }
     }
 }
